@@ -1,4 +1,7 @@
 # 作业代码上传
 
 * 软件测试作业
-  - [编写测试用例逻辑](https://github.com/RickyLiu0w0/HomeWorkCode/tree/master/Software%20Testing)
+  - [编写测试用例逻辑](Software%20Testing)
+
+* 算法
+	-[蛮力法(Brute Force)](Algotithms/Brute_Force)

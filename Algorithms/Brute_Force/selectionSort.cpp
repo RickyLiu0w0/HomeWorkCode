@@ -1,5 +1,3 @@
-#include <iostream>
-
 void  SelectionSort(int* arr, int size)
 {
 	//该算法用选择排序对给定的数组排序
