@@ -4,4 +4,4 @@
   - [编写测试用例逻辑](Software%20Testing)
 
 * 算法
-	-[蛮力法(Brute Force)](Algotithms/Brute_Force)
+  - [蛮力法(Brute Force)](Algorithms/Brute_Force)
