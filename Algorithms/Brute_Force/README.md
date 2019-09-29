@@ -7,4 +7,5 @@
 5. [最近对问题（Closest-Pair Problem）](bruteForceClosestPoints.cpp)
 6. [凸包问题（Convex-Hull Problem）](bruteForceConvexHull.cpp)
 7. [深度优先搜索（Depth First Search）](dfs.cpp)
-8. ...
+8. [广度优先搜索（Breadth First Search）](bfs.cpp)
+9. ...
