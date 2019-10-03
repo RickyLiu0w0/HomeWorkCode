@@ -11,6 +11,9 @@ public:
     ~BSTNode() {}
     
     int& element() { return it;}
+
+    inline int getElement() const {return it;}
+    
     void set_element( const int& e) { it = e;}
     int& key() {return k;}
     void set_key( const int& K) { k = K; }
@@ -93,7 +96,7 @@ public:
     {
         int it;
         char ch;
-        std::cout << "Enter the array: ";
+        std::cout << "Enter the array(q to quit): ";
         while (std::cin >> it)  { insert(it, it); }
         std::cin.clear();
         std::cin >> ch;
