@@ -6,4 +6,5 @@
 	包含前序遍历、中序遍历、后序遍历、计算树高
 4. [大整数乘法（Multiplication of Large Integers）](recursive_miltiply.cpp)
 5. [Strassen矩阵乘法（Strassen’s Matrix Multiplication）](strassenMatrix.cpp)
-6. ...
+6. [最近点对问题（Closest-Pair Problem）](efficientCloserPair.cpp)
+7. ...
