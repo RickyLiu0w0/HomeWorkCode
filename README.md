@@ -5,4 +5,4 @@
 
 * 算法
   - [蛮力法(Brute Force)](Algorithms/Brute_Force)
-  - [分治法（Divide and Conquer）](Algorithms/Divide_and_Conque)
+  - [分治法(Divide and Conquer)](Algorithms/Divide_and_Conque)
