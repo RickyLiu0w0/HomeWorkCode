@@ -24,7 +24,7 @@ def triangleTest():
             raise TriangleError()
         else:
             print ("是三角形")
-            if (side[0]**2 + side[1] ** 2 - side[2]**2 < 1e-27):
+            if (abs(side[0]**2 + side[1] ** 2 - side[2]**2) < 1e-27):
                 print("是直角三角形")
             elif (side[0]**2 + side[1] ** 2 > side[2]**2):
                 print("是锐角三角形")
@@ -61,7 +61,7 @@ def caclulateTest():
                         if (x[1] == '+'):
                             result = (one + two == three)
                         elif (x[1] == '-'):
-                            result = ((one - two - three) < 1e-15)
+                            result = (abs(one - two - three) < 1e-15)
                         elif (x[1] == '*'):
                             result =  (one * two == three)
                         elif (x[1] == '/'):
