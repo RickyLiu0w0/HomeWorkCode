@@ -28,7 +28,7 @@ cp record.sh ${dest_dir}/.record.sh
 cp scpHelp.exp ${dest_dir}/.scpHelp.exp
 cd $dest_dir
 
-if [[ ! -e record_o.txt ]]
+if [[ ! -e .record_o.txt ]]
 then
 	touch .record_o.txt
 fi
@@ -43,7 +43,6 @@ spawn scp .record.sh ${host_name}@${ip}:${src_dir}/.record.sh
 		 timeout { send_user "expect was timeout\n"; exit }
 
 	}
-	# expect eof
 
 spawn ssh -l ${host_name} ${ip}
 	expect {
@@ -58,9 +57,11 @@ spawn ssh -l ${host_name} ${ip}
 	}
 
 	expect  {
-		"done" { send "exit\r"}
+		"done" { send "rm .record.sh\r"; send "exit\r"}
 		timeout { send_user "error\n"; exit 2}
 	}
+
+	expect eof
 
 spawn scp ${host_name}@${ip}:${src_dir}/.record.txt .record_n.txt
 	expect {
@@ -69,7 +70,6 @@ spawn scp ${host_name}@${ip}:${src_dir}/.record.txt .record_n.txt
 		"No such file or directory" { send_user "error"; exit 1}
 		 timeout { send_user "expect was timeout\n"; exit 2 }
 	}
-	# expect eof
 	exit 0
 EOF
 
@@ -98,7 +98,8 @@ do
 	
 	if grep -q $file_n ".record_o.txt"
 	then
-		raw=$(find ./ -name .record_o.txt -exec grep -c  $file_n {} \;)
+		raw=$(find ./ -name .record_o.txt -exec grep -n  $file_n {} \;)
+		raw=${raw%:*}
 		# echo $raw
 		let "raw=$raw +1 "
 		# echo $raw
@@ -108,18 +109,34 @@ do
 		if [[ $data_n > $data_o ]]
 		then
 			# update
-			echo "${file_n} needs to be updated."
-			# expect .scpHelp.exp ${host_name}"@"${ip} $password ${file_n/./${src_dir}} $file_n
-		else
-			# do nothing
-			echo "No change with ${file_n}."
+			expect .scpHelp.exp ${host_name}"@"${ip} $password ${file_n/./${src_dir}} $file_n
+			echo "${file_n} has been updated."
 		fi
 	else
 		# download
-		echo "${file_n} is new."
 		mkdirHelp ${file_n%/*}
 		expect .scpHelp.exp ${host_name}"@"${ip} $password ${file_n/./${src_dir}} $file_n
+		echo "File ${file_n} has been created."
 	fi
 done < .record_n.txt
 
 # check whether the old file should be deleted
+while read line 
+do
+	file_o=$line
+	read data_o
+	if  [[ "`grep -o $file_o .record_n.txt`" = "" ]] # 记住等号空格
+	then
+		rm $file_o
+		echo "File ${file_o} han been deleted."
+		dir_o=${file_o%/*}
+		if [[ "`ls -A $dir_o`" = "" ]]
+		then
+			rm -r $dir_o
+			echo "Dir ${dir_o} han been deleted."
+		fi
+	fi
+done < .record_o.txt
+
+mv .record_n.txt .record_o.txt
+echo DONE!!!
