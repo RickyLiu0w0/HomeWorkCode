@@ -1,6 +1,6 @@
 #!/usr/bin
+# 用于与服务器的文件同步功能 server -> local
 
-# dir=$1
 dest_dir="./test"
 src_dir="~/test"
 password="XXX"
@@ -16,6 +16,16 @@ function mkdirHelp(){
 		mkdir $dir
 	else
 		echo "$dir exists"
+	fi
+}
+
+function deldirHelp() {
+	local dir=$1
+	if [[ "`ls -A $dir`" = "" ]]
+	then
+		rm -r $dir
+		echo "Dir ${dir} han been deleted."
+		deldirHelp ${dir%/*}
 	fi
 }
 
@@ -73,35 +83,17 @@ spawn scp ${host_name}@${ip}:${src_dir}/.record.txt .record_n.txt
 	exit 0
 EOF
 
-# if [[ ! -e .record_o.txt ]]
-# then
-# 	mv .record_n.txt .record_o.txt
-# 	while read line
-# 	do
-# 		file_o=$line
-# 		file_o=${file_o/./${src_dir}}
-# 		read data_o
-# 		# echo $file_n $data_n
-# 		/usr/bin/expect << EOF
-# 		send_user ${file_o}
-# EOF
-
-# # 	done < record_o.txt
-# # fi
-
 while read line
 do
 	file_n=$line
 	read data_n
-	# echo $file_n
-	# echo $data_n
 	
 	if grep -q $file_n ".record_o.txt"
 	then
 		raw=$(find ./ -name .record_o.txt -exec grep -n  $file_n {} \;)
 		raw=${raw%:*}
 		# echo $raw
-		let "raw=$raw +1 "
+		let "raw=$raw + 1 "
 		# echo $raw
 		data_o=$(sed -n ${raw}p .record_o.txt)
 		# file_n=${file_n/./${src_dir}}
@@ -129,14 +121,10 @@ do
 	then
 		rm $file_o
 		echo "File ${file_o} han been deleted."
-		dir_o=${file_o%/*}
-		if [[ "`ls -A $dir_o`" = "" ]]
-		then
-			rm -r $dir_o
-			echo "Dir ${dir_o} han been deleted."
-		fi
+		deldirHelp ${file_o%/*}
 	fi
 done < .record_o.txt
 
 mv .record_n.txt .record_o.txt
+rm .record.sh .scpHelp.exp
 echo DONE!!!
