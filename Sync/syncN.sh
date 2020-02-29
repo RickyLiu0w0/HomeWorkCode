@@ -13,7 +13,7 @@ fi
 
 echo "Synchronizes ${host_name}@${ip}:${src_dir} -> ${dest_dir}."
 echo -e "${host_name}@${ip}'s password: \c"
-read -s $password
+read -s password
 echo ""
 
 function mkdirHelp(){
@@ -52,7 +52,7 @@ then
 fi
 
 /usr/bin/expect << EOF # 启用 EXPECT 命令
-set timeout 5
+set timeout 20
 spawn scp .record.sh ${host_name}@${ip}:${src_dir}/.record.sh
 	expect {
 		"(yes/no)*" { send "yes\r"; exp_continue}
