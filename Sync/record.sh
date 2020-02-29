@@ -9,13 +9,16 @@ function getdir(){
 			getdir $dir_or_file
 		else
 			echo $dir_or_file >> .record.txt
+			# 查看文件修改时间
 			stat  $dir_or_file | grep -i Modify | awk -F. '{print $1}' | awk '{print $2$3}'| awk -F- '{print $1$2$3}' | awk -F: '{print $1$2$3}' >>.record.txt
 		fi
 	done
 }
 
 dir='.'
-if [[ -e .record.txt ]]; then
+# 更新文件表
+if [[ -e .record.txt ]]
+then
 	rm .record.txt
 fi
 touch .record.txt
